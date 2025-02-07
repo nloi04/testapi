@@ -1,0 +1,26 @@
+name: Run FastAPI Server
+
+on:
+  workflow_dispatch:  # Cho phép chạy workflow thủ công
+
+jobs:
+  run-api:
+    runs-on: ubuntu-latest  # Chạy trên máy ảo Ubuntu
+
+    steps:
+      - name: Lấy code từ GitHub
+        uses: actions/checkout@v3
+
+      - name: Cài đặt Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cài đặt thư viện FastAPI
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Chạy FastAPI bằng Uvicorn
+        run: |
+          nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
